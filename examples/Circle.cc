@@ -55,6 +55,7 @@
 #endif /* _OPENMP */
 
 #include "RVO.h"
+#include "raylib.h"
 
 namespace {
 const float RVO_TWO_PI = 6.28318530717958647692F;
@@ -83,10 +84,14 @@ void setupScenario(
 void updateVisualization(RVO::RVOSimulator *simulator) {
   /* Output the current global time. */
   std::cout << simulator->getGlobalTime();
+  RVO::Vector2 origin = {GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
 
   /* Output the current position of all the agents. */
   for (std::size_t i = 0U; i < simulator->getNumAgents(); ++i) {
-    std::cout << " " << simulator->getAgentPosition(i);
+    RVO::Vector2 agentPosition = simulator->getAgentPosition(i);
+    float agentRadius = simulator->getAgentRadius(i);
+    std::cout << " " << agentPosition;
+    DrawCircle(agentPosition.x() + origin.x(), agentPosition.y() + origin.y(), agentRadius, RED);
   }
 
   std::cout << std::endl;
@@ -136,12 +141,16 @@ int main() {
   setupScenario(simulator, goals);
 
   /* Perform and manipulate the simulation. */
+  InitWindow(800, 600, "Circle ORCA Visualization");
   do {
+    BeginDrawing();
+    ClearBackground(BLACK);
 #if RVO_OUTPUT_TIME_AND_POSITIONS
     updateVisualization(simulator);
 #endif /* RVO_OUTPUT_TIME_AND_POSITIONS */
     setPreferredVelocities(simulator, goals);
     simulator->doStep();
+    EndDrawing();
   } while (!reachedGoal(simulator, goals));
 
   delete simulator;

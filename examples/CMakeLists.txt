@@ -68,10 +68,16 @@ if(BUILD_TESTING)
     set(RVO_EXAMPLES_INTERPROCEDURAL_OPTIMIZATION OFF)
   endif()
 
+  find_package(raylib REQUIRED)
+
   add_executable(Blocks Blocks.cc)
   target_compile_definitions(Blocks PRIVATE
     ${RVO_EXAMPLES_COMPILE_DEFINITIONS})
   target_link_libraries(Blocks PRIVATE ${RVO_LIBRARY})
+  target_link_libraries(Blocks PRIVATE raylib)
+  if (WIN32)
+    target_link_libraries(Blocks PRIVATE winmm)
+  endif()
   target_compile_options(Blocks PRIVATE ${RVO_EXAMPLES_COMPILE_OPTIONS})
   set_target_properties(Blocks PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION ${RVO_EXAMPLES_INTERPROCEDURAL_OPTIMIZATION}
@@ -85,6 +91,10 @@ if(BUILD_TESTING)
   target_compile_definitions(Circle PRIVATE
     ${RVO_EXAMPLES_COMPILE_DEFINITIONS})
   target_link_libraries(Circle PRIVATE ${RVO_LIBRARY})
+  target_link_libraries(Circle PRIVATE raylib)
+  if (WIN32)
+    target_link_libraries(Circle PRIVATE winmm)
+  endif()
   target_compile_options(Circle PRIVATE ${RVO_EXAMPLES_COMPILE_OPTIONS})
   set_target_properties(Circle PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION ${RVO_EXAMPLES_INTERPROCEDURAL_OPTIMIZATION}
@@ -98,6 +108,10 @@ if(BUILD_TESTING)
   target_compile_definitions(Roadmap PRIVATE
     ${RVO_EXAMPLES_COMPILE_DEFINITIONS})
   target_link_libraries(Roadmap PRIVATE ${RVO_LIBRARY})
+  target_link_libraries(Roadmap PRIVATE raylib)
+  if (WIN32)
+    target_link_libraries(Roadmap PRIVATE winmm)
+  endif()
   target_compile_options(Roadmap PRIVATE ${RVO_EXAMPLES_COMPILE_OPTIONS})
   set_target_properties(Roadmap PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION ${RVO_EXAMPLES_INTERPROCEDURAL_OPTIMIZATION}
